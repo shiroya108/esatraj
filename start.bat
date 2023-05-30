@@ -1,0 +1,1 @@
+C:/Users/ESA_Lab/anaconda3/python.exe d:/ESATraj/main.py
