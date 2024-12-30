@@ -15,15 +15,29 @@ import pandas as pd
 import time
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT 
+from connection import Connection
+from esatraj_ui import Ui_ESATrajWindow
+from qtrangeslider import QLabeledRangeSlider
 
 # update 3d/2d plots period (ms)
 PLOT_UPDATE_PERIOD = 500
+DEFAUTL_CONNECTION_TYPE = "COM"
+DEFAULT_MAC_ADDRESS = "E4:5F:01:2B:FA:73"
+
+FILTER_PLOT = True
 
 class Canvas3d(FigureCanvasQTAgg):
     def __init__(self, parent):
         fig = plt.figure(figsize=[14.4, 10.8])
         self.ax = fig.add_subplot(projection="3d")
         self.ax.set_xlabel('X')
+        
+        # y up
+        # if self.axis_up == "Y":
+        #     self.ax.set_ylabel('Z')
+        #     self.ax.set_zlabel('Y')
+        # # z up
+        # else:
         self.ax.set_ylabel('Y')
         self.ax.set_zlabel('Z')
         # self.ax.axis('equal')
@@ -42,159 +56,67 @@ class Canvas2d(FigureCanvasQTAgg):
         self.timer = self.new_timer(PLOT_UPDATE_PERIOD)
         self.setParent(parent)
 
+class ESATraj(Ui_ESATrajWindow):
 
-class Ui_ESATrajWindow(object):
-    def setupUi(self, ESATrajWindow):
-        ESATrajWindow.setObjectName("ESATrajWindow")
-        # ESATrajWindow.resize(1382, 619)
-        ESATrajWindow.resize(800, 619)
-        self.centralwidget = QtWidgets.QWidget(ESATrajWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.ComPortSelect = QtWidgets.QComboBox(self.centralwidget)
-        self.ComPortSelect.setGeometry(QtCore.QRect(20, 30, 111, 22))
-        self.ComPortSelect.setObjectName("ComPortSelect")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(20, 10, 61, 16))
-        self.label.setObjectName("label")
-        # self.Enable2DPlot = QtWidgets.QCheckBox(self.centralwidget)
-        # self.Enable2DPlot.setGeometry(QtCore.QRect(20, 100, 73, 16))
-        # self.Enable2DPlot.setObjectName("Enable2DPlot")
-
-        # enable 3d plot
-        self.Enable3DPlot = QtWidgets.QCheckBox(self.centralwidget)
-        self.Enable3DPlot.setGeometry(QtCore.QRect(20, 70, 73, 16))
-        self.Enable3DPlot.setChecked(True)
-        self.Enable3DPlot.setObjectName("Enable3DPlot")
-
-
-        # connect
-        self.ConnectButton = QtWidgets.QPushButton(self.centralwidget)
-        self.ConnectButton.setGeometry(QtCore.QRect(20, 170, 111, 23))
-        self.ConnectButton.setObjectName("ConnectButton")
-        # self.SavePlotButton = QtWidgets.QPushButton(self.centralwidget)
-        # self.SavePlotButton.setGeometry(QtCore.QRect(20, 550, 111, 23))
-        # self.SavePlotButton.setObjectName("SavePlotButton")
-
-        # start plot
-        self.StartPlotButton = QtWidgets.QPushButton(self.centralwidget)
-        self.StartPlotButton.setGeometry(QtCore.QRect(20, 510, 111, 23))
-        self.StartPlotButton.setObjectName("StartPlotButton")
-
-
-        # clear plot
-        self.ClearPlotButton = QtWidgets.QPushButton(self.centralwidget)
-        self.ClearPlotButton.setGeometry(QtCore.QRect(20, 550, 111, 23))
-        self.ClearPlotButton.setObjectName("ClearPlotButton")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-
-
-        self.label_2.setGeometry(QtCore.QRect(410, 10, 47, 12))
-        self.label_2.setObjectName("label_2")
-        # self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        # self.label_3.setGeometry(QtCore.QRect(1080, 10, 47, 12))
-        # self.label_3.setObjectName("label_3")
-        self.ComStatusDisplay = QtWidgets.QLabel(self.centralwidget)
-        self.ComStatusDisplay.setGeometry(QtCore.QRect(20, 210, 111, 16))
-        self.ComStatusDisplay.setObjectName("ComStatusDisplay")
-        self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(20, 240, 111, 16))
-        self.label_5.setObjectName("label_5")
-        self.DataCountDisplay = QtWidgets.QLineEdit(self.centralwidget)
-        self.DataCountDisplay.setEnabled(True)
-        self.DataCountDisplay.setGeometry(QtCore.QRect(20, 260, 111, 20))
-        self.DataCountDisplay.setReadOnly(False)
-        self.DataCountDisplay.setObjectName("DataCountDisplay")
-
-        # enable log
-        self.EnableLog = QtWidgets.QCheckBox(self.centralwidget)
-        self.EnableLog.setGeometry(QtCore.QRect(20, 130, 121, 16))
-        self.EnableLog.setObjectName("EnableLog")
-
-        # save csv
-        self.StartCSVButton = QtWidgets.QPushButton(self.centralwidget)
-        self.StartCSVButton.setGeometry(QtCore.QRect(20, 300, 111, 23))
-        self.StartCSVButton.setObjectName("StartCSVButton")
-
-        # load csv
-        self.LoadCSVButton = QtWidgets.QPushButton(self.centralwidget)
-        self.LoadCSVButton.setGeometry(QtCore.QRect(20, 340, 111, 23))
-        self.LoadCSVButton.setObjectName("LoadCSVButton")
-
-        self.PlotPlaneSelect = QtWidgets.QComboBox(self.centralwidget)
-        self.PlotPlaneSelect.setGeometry(QtCore.QRect(20, 470, 111, 22))
-        self.PlotPlaneSelect.setObjectName("PlotPlaneSelect")
-        self.PlotPlaneSelect.addItem("")
-        self.PlotPlaneSelect.addItem("")
-        self.PlotPlaneSelect.addItem("")
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(20, 450, 101, 16))
-        self.label_4.setObjectName("label_4")
-        # self.PlotLayout3d = QtWidgets.QVBoxLayout(self.centralwidget)
-        # self.PlotLayout3d.setGeometry(QtCore.QRect(170, 30, 591, 551))
-        # self.PlotLayout3d.setObjectName("PlotLayout3d")
-        # self.PlotLayout2d = QtWidgets.QVBoxLayout(self.centralwidget)
-        # self.PlotLayout2d.setGeometry(QtCore.QRect(780, 30, 591, 551))
-        # self.PlotLayout2d.setObjectName("PlotLayout2d")
-        ESATrajWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(ESATrajWindow)
-        self.statusbar.setObjectName("statusbar")
-        ESATrajWindow.setStatusBar(self.statusbar)
-
-        self.retranslateUi(ESATrajWindow)
+    def __init__(self):
+        super().__init__()
+    
+    def init(self):
         self.initVariables()
+        self.showComMacInput()
         self.initPlot()
         self.updateCom()
         self.buttonEvents()
-        QtCore.QMetaObject.connectSlotsByName(ESATrajWindow)
-
-    def retranslateUi(self, ESATrajWindow):
-        _translate = QtCore.QCoreApplication.translate
-        ESATrajWindow.setWindowTitle(_translate("ESATrajWindow", "ESATraj Plotter"))
-        self.label.setText(_translate("ESATrajWindow", "COM Port"))
-        # self.Enable2DPlot.setText(_translate("ESATrajWindow", "2D Plot"))
-        self.Enable3DPlot.setText(_translate("ESATrajWindow", "3D Plot"))
-        self.ConnectButton.setText(_translate("ESATrajWindow", "Connect"))
-        # self.SavePlotButton.setText(_translate("ESATrajWindow", "Save Plot"))
-        self.StartPlotButton.setText(_translate("ESATrajWindow", "Start Plot"))
-        self.ClearPlotButton.setText(_translate("ESATrajWindow", "Clear Plot"))
-        self.label_2.setText(_translate("ESATrajWindow", "3D"))
-        # self.label_3.setText(_translate("ESATrajWindow", "2D"))
-        self.ComStatusDisplay.setText(_translate("ESATrajWindow", "Disconnected"))
-        self.label_5.setText(_translate("ESATrajWindow", "Data Received "))
-        self.DataCountDisplay.setText(_translate("ESATrajWindow", "0"))
-        self.EnableLog.setText(_translate("ESATrajWindow", "Terminal Log"))
-        self.StartCSVButton.setText(_translate("ESATrajWindow", "Save CSV"))
-        self.LoadCSVButton.setText(_translate("ESATrajWindow", "Load CSV"))
-        self.PlotPlaneSelect.setItemText(0, _translate("ESATrajWindow", "XY"))
-        self.PlotPlaneSelect.setItemText(1, _translate("ESATrajWindow", "XZ"))
-        self.PlotPlaneSelect.setItemText(2, _translate("ESATrajWindow", "YZ"))
-        self.label_4.setText(_translate("ESATrajWindow", "2D Plot Plane"))
-
-
 
  #----------- initiazation ----------
     def initVariables(self):
+        self.connection_type = DEFAUTL_CONNECTION_TYPE
         self.com_port_name = ""
+        self.connection_mac_address = DEFAULT_MAC_ADDRESS
+        self.InputMacAddress.setText(DEFAULT_MAC_ADDRESS)
         self.raw_data = []
         self.trajectory3d = np.empty([0,3])
-        self.trajectory2d = np.empty([0,2])
-        self.enable_plot2d = False
-        self.enable_plot3d = False
+        self.plot_trajectory = np.empty([0,3])
+        # self.enable_plot2d = False
+        # self.enable_plot3d = False
         self.enable_log = False
         self.connected = False
         self.drawing = False
         self.data_count = 0
+        self.axis_up = "Z"
+        self.animation_speed =10
+        self.playing_animation = False
 
         # self.current_x =0
         # self.current_y = 0
         # self.current_z = 0
 
+    def showComMacInput(self):
+        if self.connection_type == "COM":
+            self.LabelComMac.setText("COM Port")
+            self.InputMacAddress.hide()
+            self.ComPortSelect.show()
+        elif self.connection_type == "MAC":
+            self.LabelComMac.setText("MAC Address")
+            self.InputMacAddress.show()
+            self.ComPortSelect.hide()
+
     def initPlot(self):
         self.plot3d_canvas = Canvas3d(self.centralwidget)
-        self.plot3d_canvas.setGeometry(QtCore.QRect(170, 30, 590, 520))
-        self.plot3d_line = self.plot3d_canvas.ax.plot(self.trajectory3d[:,0], self.trajectory3d[:,1], self.trajectory3d[:,2], color = 'b', linewidth=2.0)
+        geo = self.PlotPosition.geometry()
+        self.plot3d_canvas.setGeometry(geo)
+        # y up
+        if self.axis_up == "Y":
+            self.plot3d_line = self.plot3d_canvas.ax.plot(self.plot_trajectory[:,0], self.plot_trajectory[:,2], self.plot_trajectory[:,1], color = 'b', linewidth=2.0)
+        # z up 
+        else:
+            self.plot3d_line = self.plot3d_canvas.ax.plot(self.plot_trajectory[:,0], self.plot_trajectory[:,1], self.plot_trajectory[:,2], color = 'b', linewidth=2.0)
         self.plot3d_toolbar = NavigationToolbar2QT(self.plot3d_canvas,self.centralwidget)
-        self.plot3d_toolbar.setGeometry(QtCore.QRect(170, 550, 590, 50))
+        geo = self.PlotNavPosition.geometry()
+        self.plot3d_toolbar.setGeometry(geo)
+
+        # add range slider even        
+        
         
     # add button events
     def buttonEvents(self):
@@ -202,7 +124,24 @@ class Ui_ESATrajWindow(object):
         self.ClearPlotButton.clicked.connect(self.clearPlot)
         self.StartCSVButton.clicked.connect(self.saveCSV)
         self.LoadCSVButton.clicked.connect(self.loadCSV)
-        # self.SavePlotButton.clicked.connect(self.savePlot)
+
+        self.Enable_ConnectByCOM.clicked.connect(self.EnableCom)
+        self.Enable_ConnectByMAC.clicked.connect(self.EnableMac)
+
+        self.Enable_YUp.clicked.connect(self.SetYUp)
+        self.Enable_ZUp.clicked.connect(self.SetZUp)
+
+        self.PlotRangeFrom.valueChanged.connect(self.PlotRangeFromChanged)
+        self.PlotRangeTo.valueChanged.connect(self.PlotRangeToChanged)
+        # self.PlotRangeFrom.sliderReleased.connect(self.updatePlotRange)
+        # self.PlotRangeTo.sliderReleased.connect(self.updatePlotRange)
+        self.PlotRangeFromInput.editingFinished.connect(self.PlotRangeFromInputChanged)
+        self.PlotRangeToInput.editingFinished.connect(self.PlotRangeToInputChanged)
+
+        self.AnimationSpeed.valueChanged.connect(self.AnimationSpeedChanged)
+        self.AnimationSpeedInput.editingFinished.connect(self.AnimationSpeedInputChanged)
+        self.PlayAnimationButton.clicked.connect(self.PlayAnimation)
+
 
     # update com port list
     def updateCom(self):
@@ -214,29 +153,57 @@ class Ui_ESATrajWindow(object):
         self.ComPortSelect.addItem("Dummy")
 
     #------------------ events ---------------------
+
+    def EnableCom(self):
+        self.connection_type = "COM"
+        self.showComMacInput()
+
+    def EnableMac(self):
+        self.connection_type = "MAC"
+        self.showComMacInput()
+
+    
+    def update_axis_range(self):
+        if self.plot_trajectory.shape[0] >= 1:
+            min_x = np.amin(self.plot_trajectory[:, 0])
+            min_y = np.amin(self.plot_trajectory[:, 1])
+            min_z = np.amin(self.plot_trajectory[:, 2])
+            max_x = np.amax(self.plot_trajectory[:, 0])
+            max_y = np.amax(self.plot_trajectory[:, 1])
+            max_z = np.amax(self.plot_trajectory[:, 2])
+            range_x = np.absolute(max_x - min_x)
+            range_y = np.absolute(max_y - min_y)
+            range_z = np.absolute(max_z - min_z)
+            max_range = np.maximum(np.maximum(range_x, range_y), range_z)
+            self.plot3d_canvas.ax.set_xlim(min_x, min_x + max_range)
+            if self.axis_up == "Y":
+                self.plot3d_canvas.ax.set_zlim(min_y, min_y + max_range)
+                self.plot3d_canvas.ax.set_ylim(min_z, min_z + max_range)
+            else:
+                self.plot3d_canvas.ax.set_ylim(min_y, min_y + max_range)
+                self.plot3d_canvas.ax.set_zlim(min_z, min_z + max_range)
+
     def update_3d_plot(self):
-        self.plot3d_canvas.ax.plot(self.trajectory3d[:,0], self.trajectory3d[:,1], self.trajectory3d[:,2], color = 'b', linewidth=2.0)
-        min_x = np.amin(self.trajectory3d[:, 0])
-        min_y = np.amin(self.trajectory3d[:, 1])
-        min_z = np.amin(self.trajectory3d[:, 2])
-        max_x = np.amax(self.trajectory3d[:, 0])
-        max_y = np.amax(self.trajectory3d[:, 1])
-        max_z = np.amax(self.trajectory3d[:, 2])
-        range_x = np.absolute(max_x - min_x)
-        range_y = np.absolute(max_y - min_y)
-        range_z = np.absolute(max_z - min_z)
-        max_range = np.maximum(np.maximum(range_x, range_y), range_z)
-        self.plot3d_canvas.ax.set_xlim(min_x, min_x + max_range)
-        self.plot3d_canvas.ax.set_ylim(min_y, min_y + max_range)
-        self.plot3d_canvas.ax.set_zlim(min_z, min_z + max_range)
+        if self.plot_trajectory.shape[0] >= 1:
+            self.plot3d_canvas.ax.clear()
+
+            # y up
+            if self.axis_up == "Y":
+                self.plot3d_canvas.ax.plot(self.plot_trajectory[:,0], self.plot_trajectory[:,2], self.plot_trajectory[:,1], color = 'b', linewidth=2.0)
+            # z up
+            else:
+                self.plot3d_canvas.ax.plot(self.plot_trajectory[:,0], self.plot_trajectory[:,1], self.plot_trajectory[:,2], color = 'b', linewidth=2.0)
+        
+            
         self.plot3d_canvas.draw()
     
 
     def connectPort(self):
         # self.enable_plot2d = self.Enable2DPlot.isChecked()
-        self.enable_plot3d = self.Enable3DPlot.isChecked()
+        # self.enable_plot3d = True
         self.enable_log = self.EnableLog.isChecked()
         self.com_port_name = self.ComPortSelect.currentText()
+        self.connection_mac_address = self.InputMacAddress.text()
         self.ComStatusDisplay.setText("Connecting...") 
         self.data_count = 0   
         self.clearPlot()  
@@ -244,12 +211,12 @@ class Ui_ESATrajWindow(object):
         def update_3dplot_process():
             if self.drawing:
                 try:
-                    self.update_3d_plot()
+                    self.updatePlotRange(update_axis_range=True)
                 except:
                     pass
 
         
-        if self.com_port_name == 'Dummy':
+        if self.connection_type=="COM" and self.com_port_name == 'Dummy':
             # change status to connected
             self.connected = True
             # create dummy trajectory
@@ -267,10 +234,10 @@ class Ui_ESATrajWindow(object):
                     self.current_y = np.cos(self.current_z)*50
 
                     # receive trajectory
-                    if self.enable_plot2d:
-                        self.trajectory2d = np.append(self.trajectory2d,[[self.current_x,self.current_y]],axis=0)
-                    if self.enable_plot3d:
-                        self.trajectory3d = np.append(self.trajectory3d,[[self.current_x,self.current_y,self.current_z]],axis=0)
+                    # if self.enable_plot2d:
+                    #     self.trajectory2d = np.append(self.trajectory2d,[[self.current_x,self.current_y]],axis=0)
+                    # if self.enable_plot3d:
+                    self.trajectory3d = np.append(self.trajectory3d,[[self.current_x,self.current_y,self.current_z]],axis=0)
                         
                         # self.fig3d= px.line_3d(data_frame=self.trajectory3d, x=0, y=1, z=2)
 
@@ -279,10 +246,11 @@ class Ui_ESATrajWindow(object):
 
                     # log trajectory
                     if self.enable_log:
-                        if self.enable_plot3d and self.trajectory3d.shape[0] >= 1:
+                        # if self.enable_plot3d and self.trajectory3d.shape[0] >= 1:
+                        if self.trajectory3d.shape[0] >= 1:
                             print(self.trajectory3d[-1])
-                        elif self.enable_plot2d and self.trajectory2d.shape[0] >= 1:
-                            print(self.trajectory2d[-1])
+                        # elif self.enable_plot2d and self.trajectory2d.shape[0] >= 1:
+                        #     print(self.trajectory2d[-1])
                             
 
                     time.sleep(0.01)
@@ -299,7 +267,17 @@ class Ui_ESATrajWindow(object):
             
         else:
             # connect to com port
-            self.serial = Serial(self.com_port_name,9600)
+            
+            self.connection = Connection(type=self.connection_type, port=self.com_port_name, baud=9600)
+
+            if self.connection_type == "COM":
+                self.connection = Connection(type=self.connection_type, port=self.com_port_name, baud=9600)
+            elif self.connection_type == "MAC":
+                self.connection = Connection(type=self.connection_type, address=self.connection_mac_address, port="0")
+
+            self.connection.connect()
+           
+            # self.serial = Serial(self.com_port_name,9600)
          
             # change status to connected
             self.connected = True
@@ -309,12 +287,14 @@ class Ui_ESATrajWindow(object):
             time.sleep(0.1)
             
             # receive and draw
-            self.serial.write(b'esatraj_start')
+            self.connection.send(b'esatraj_start')
+            # self.serial.write(b'esatraj_start')
 
             def receive_traj():
                 while self.connected:
                     try:
-                        data_raw = self.serial.readline()
+                        data_raw = self.connection.read()
+                        # data_raw = self.serial.readline()
                         data = data_raw.decode()
 
                         if self.enable_log:
@@ -328,14 +308,21 @@ class Ui_ESATrajWindow(object):
                         self.data_count += 1
                         self.DataCountDisplay.setText(str(self.data_count))
 
-                        if self.enable_plot2d:
-                            self.trajectory2d = np.append(self.trajectory2d,[[x,y]],axis=0)
-                        if self.enable_plot3d:
-                            self.trajectory3d = np.append(self.trajectory3d,[[x,y,z]],axis=0)
+                        # if self.enable_plot2d:
+                        #     self.trajectory2d = np.append(self.trajectory2d,[[x,y]],axis=0)
+                        # if self.enable_plot3d:
+                        self.trajectory3d = np.append(self.trajectory3d,[[x,z,y]],axis=0)
+
+                        if self.data_count %10 == 0:
+                            self.update_3d_plot()
+                            self.updatePlotRange(True,0,True,self.trajectory3d.shape[0])
+                        
+
                     except:
                         pass      
                 try:
-                    self.serial.write(self.serial.write(b'esatraj_stop'))
+                    self.connection.send(b'esatraj_stop')
+                    # self.serial.write(b'esatraj_stop')
                 except:
                     pass      
             # run receiving process
@@ -357,8 +344,16 @@ class Ui_ESATrajWindow(object):
         self.plot3d_canvas.timer.stop()
         self.plot3d_canvas.ax.clear()
         self.plot3d_canvas.ax.set_xlabel('X')
-        self.plot3d_canvas.ax.set_ylabel('Y')
-        self.plot3d_canvas.ax.set_zlabel('Z')
+
+        # y up
+        if self.axis_up == "Y":
+            self.plot3d_canvas.ax.set_ylabel('Z')
+            self.plot3d_canvas.ax.set_zlabel('Y')
+
+        # z up
+        else:
+            self.plot3d_canvas.ax.set_ylabel('Y')
+            self.plot3d_canvas.ax.set_zlabel('Z')
         self.plot3d_canvas.draw()
         # self.update_3d_plot()
 
@@ -370,7 +365,8 @@ class Ui_ESATrajWindow(object):
             # send stop when disconnecting
             try:
                 time.sleep(5)
-                self.serial.close()
+                self.connection.disconnect()
+                # self.serial.close()
             except:
                 pass
             self.connected = False
@@ -382,7 +378,10 @@ class Ui_ESATrajWindow(object):
 
 
     def displayConnected(self):
-        self.ComStatusDisplay.setText(self.com_port_name +" Connected")
+        if self.connection_type == "COM":
+            self.ComStatusDisplay.setText(self.com_port_name +" Connected")
+        elif self.connection_type == "MAC":
+            self.ComStatusDisplay.setText(self.connection_mac_address +" Connected")
         self.drawing = True
         self.ConnectButton.clicked.disconnect()
         self.ConnectButton.setText("Disconnect")
@@ -404,8 +403,9 @@ class Ui_ESATrajWindow(object):
         path = QtWidgets.QFileDialog.getSaveFileName(None, "Select destination folder and file name", "", "CSV files (*.csv)",
                                     options=options)[0]
         try:
-            csv_data = pd.DataFrame(self.trajectory3d)
-            csv_data.to_csv(path)
+            np.savetxt(path,self.trajectory3d,delimiter=',')
+            # csv_data = pd.DataFrame(self.trajectory3d)
+            # csv_data.to_csv(path)
         except:
             if self.enable_log:
                 print("Unable to save CSV file")
@@ -417,27 +417,161 @@ class Ui_ESATrajWindow(object):
         self.clearPlot()
 
         try:
-            csv_data = pd.read_csv(path)
-            np_array = csv_data.to_numpy()[:,1:]
-            self.trajectory3d = np_array
+            # csv_data = pd.read_csv(path)
+            # np_array = csv_data.to_numpy()[:,1:]
+            np_array = np.genfromtxt(path, delimiter=',')
+            self.trajectory3d = np_array[:,0:3]
+            print(self.trajectory3d)
             self.data_count = np_array.shape[0]
             self.DataCountDisplay.setText(str(self.data_count))
             self.plot3d_canvas.ax.set_title(path)
-            self.update_3d_plot()
+            self.PlotRangeFrom.setValue(0)
+            self.PlotRangeTo.setValue(self.data_count)
+            self.updatePlotRange(True, 0, True, self.data_count, True)
         except:
             if self.enable_log:
                 print("Unable to open CSV file")
 
         # print(path)
         # print(np_array)
+
+
+    def SetYUp(self):
+        self.axis_up = "Y"
+        self.clearPlot()
+        self.updatePlotRange(update_axis_range=True)
+
+    def SetZUp(self):
+        self.axis_up = "Z"
+        self.clearPlot()
+        self.updatePlotRange(update_axis_range=True)
+
+    def updatePlotRange(self,set_start=False, start=0,  set_end=False, end=0, update_axis_range=False):
+        to_traj_end = False
+        if set_start:
+            plot_start=start
+        else:
+            plot_start = self.PlotRangeFrom.value() 
+        
+        if set_end:
+            plot_end = end
+        else:
+            plot_end = self.PlotRangeTo.value()
+        traj_length = self.trajectory3d.shape[0]
+
+        # if range to is in maximum value, keep extend plot
+        if self.PlotRangeTo.value() >= self.PlotRangeTo.maximum():
+            to_traj_end = True
+
+
+        self.PlotRangeFrom.setMaximum(traj_length)
+        self.PlotRangeTo.setMaximum(traj_length)
+
+        if to_traj_end:
+            self.PlotRangeTo.setValue(traj_length)
+
+
+        if plot_start >= traj_length:
+            plot_start = traj_length -1
+
+        if plot_start < 0:
+            plot_start = 0
+
+        if plot_start > plot_end:
+            plot_end = plot_start
+        
+
+        if plot_end < plot_start:
+            plot_start = plot_end
+
+        self.PlotRangeFrom.setValue(plot_start)
+        self.PlotRangeTo.setValue(plot_end)
+        self.PlotRangeFromInput.setText(str(plot_start))
+        self.PlotRangeToInput.setText(str(plot_end))
+
+
+        if plot_end-plot_start >= 1:
+            self.plot_trajectory = self.trajectory3d[plot_start:plot_end,:]
+        else:
+            self.plot_trajectory = np.empty((0,3))
+
+        if update_axis_range:
+            self.update_axis_range()
+        self.update_3d_plot()
+    
+    def updateAnimationSpeed(self,speed):
+        if speed < 1:
+            speed = 1
+
+        if speed > 1000:
+            speed = 1000
+
+        self.animation_speed = speed
+        self.AnimationSpeedInput.setText(str(speed))
+        self.AnimationSpeed.setValue(speed)
+
+
+    def PlayAnimation(self):
+        if not self.playing_animation:
+            def play():
+                start_pos = self.PlotRangeFrom.value()
+                traj_length = self.trajectory3d.shape[0]
+
+                if self.PlotRangeTo.value() >= traj_length:
+                    end_pos = start_pos
+                else:
+                    end_pos = self.PlotRangeTo.value()
+
+
+                interval = self.animation_speed
+                while end_pos < traj_length:
+                    end_pos += interval
+                    if end_pos > traj_length:
+                        end_pos = traj_length
+                    self.updatePlotRange(True,start_pos,True,end_pos)
+                    time.sleep(0.05)
+                    if not self.playing_animation:
+                        break
+                self.PlayAnimationButton.setText("Play Animation")
+                
+
+            self.playing_animation = True
+            self.PlayAnimationButton.setText("Stop Animation")
+            threading.Thread(target=play).start()
+        
+        else:
+            self.playing_animation = False
+            self.PlayAnimationButton.setText("Play Animation")
+
+
+    def PlotRangeFromChanged(self):
+        # self.PlotRangeFromInput.setText(str(self.PlotRangeFrom.value()))
+        self.updatePlotRange(True,self.PlotRangeFrom.value())
+
+    def PlotRangeToChanged(self):
+        # self.PlotRangeToInput.setText(str(self.PlotRangeTo.value()))
+        self.updatePlotRange(False,0,True,self.PlotRangeTo.value())
+    
+    def PlotRangeFromInputChanged(self):
+        self.updatePlotRange(True,int(self.PlotRangeFromInput.text()))
+
+    def PlotRangeToInputChanged(self):
+        self.updatePlotRange(False,0,True,int(self.PlotRangeToInput.text()))
+
+    def AnimationSpeedChanged(self):
+        self.updateAnimationSpeed(self.AnimationSpeed.value())
+
+    def AnimationSpeedInputChanged(self):
+        self.updateAnimationSpeed(int(self.AnimationSpeedInput.text()))
     
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    ESATrajWindow = QtWidgets.QMainWindow()
-    ui = Ui_ESATrajWindow()
-    ui.setupUi(ESATrajWindow)
-    ESATrajWindow.show()
+    window = QtWidgets.QMainWindow()
+    ui = ESATraj()
+    ui.setupUi(window)
+    ui.init()
+    # window.closeEvent = ui.close
+    window.show()
     sys.exit(app.exec_())
-

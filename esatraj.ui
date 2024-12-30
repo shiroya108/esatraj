@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1382</width>
-    <height>619</height>
+    <width>1190</width>
+    <height>859</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,18 +17,18 @@
    <widget class="QComboBox" name="ComPortSelect">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>30</y>
+      <x>50</x>
+      <y>100</y>
       <width>111</width>
       <height>22</height>
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="LabelComMac">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
+      <x>50</x>
+      <y>80</y>
       <width>61</width>
       <height>16</height>
      </rect>
@@ -37,40 +37,11 @@
      <string>COM Port</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="Enable2DPlot">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>100</y>
-      <width>73</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>2D Plot</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="Enable3DPlot">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>70</y>
-      <width>73</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>3D Plot</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QPushButton" name="ConnectButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>170</y>
+      <x>50</x>
+      <y>160</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -79,24 +50,11 @@
      <string>Connect</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="SavePlotButton">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>550</y>
-      <width>111</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Save Plot</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="StartPlotButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>470</y>
+      <x>30</x>
+      <y>760</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -108,8 +66,8 @@
    <widget class="QPushButton" name="ClearPlotButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>510</y>
+      <x>30</x>
+      <y>800</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -118,37 +76,11 @@
      <string>Clear Plot</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>10</y>
-      <width>47</width>
-      <height>12</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>3D</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>1080</x>
-      <y>10</y>
-      <width>47</width>
-      <height>12</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>2D</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="ComStatusDisplay">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>210</y>
+      <x>40</x>
+      <y>200</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -160,8 +92,8 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>240</y>
+      <x>40</x>
+      <y>230</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -176,8 +108,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>260</y>
+      <x>40</x>
+      <y>250</y>
       <width>111</width>
       <height>20</height>
      </rect>
@@ -192,7 +124,7 @@
    <widget class="QCheckBox" name="EnableLog">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>50</x>
       <y>130</y>
       <width>121</width>
       <height>16</height>
@@ -205,8 +137,8 @@
    <widget class="QPushButton" name="StartCSVButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>300</y>
+      <x>40</x>
+      <y>310</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -218,12 +150,17 @@
    <widget class="QComboBox" name="PlotPlaneSelect">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>430</y>
+      <x>40</x>
+      <y>480</y>
       <width>111</width>
       <height>22</height>
      </rect>
     </property>
+    <item>
+     <property name="text">
+      <string> - </string>
+     </property>
+    </item>
     <item>
      <property name="text">
       <string>XY</string>
@@ -243,34 +180,336 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>410</y>
+      <x>50</x>
+      <y>460</y>
       <width>101</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>2D Plot Plane</string>
+     <string>2D Plane View</string>
     </property>
    </widget>
-   <widget class="QWidget" name="PlotWidget3d" native="true">
+   <widget class="QRadioButton" name="Enable_ConnectByCOM">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>30</y>
-      <width>591</width>
-      <height>551</height>
+      <x>50</x>
+      <y>20</y>
+      <width>83</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>By COM</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup</string>
+    </attribute>
+   </widget>
+   <widget class="QRadioButton" name="Enable_ConnectByMAC">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>50</y>
+      <width>83</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>By MAC</string>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup</string>
+    </attribute>
+   </widget>
+   <widget class="QLineEdit" name="InputMacAddress">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>100</y>
+      <width>113</width>
+      <height>20</height>
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="PlotWidget2d" native="true">
+   <widget class="QPushButton" name="LoadCSVButton">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>30</y>
-      <width>591</width>
-      <height>551</height>
+      <x>40</x>
+      <y>350</y>
+      <width>111</width>
+      <height>23</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>Load CSV</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Enable_YUp">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>400</y>
+      <width>87</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Y Up</string>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup_2</string>
+    </attribute>
+   </widget>
+   <widget class="QRadioButton" name="Enable_ZUp">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>430</y>
+      <width>87</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Z Up</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup_2</string>
+    </attribute>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>530</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Plot Range</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PlotPosition">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>10</y>
+      <width>941</width>
+      <height>741</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PlotNavPosition">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>780</y>
+      <width>951</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QSlider" name="PlotRangeFrom">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>550</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="singleStep">
+     <number>10</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QSlider" name="PlotRangeTo">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>580</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="singleStep">
+     <number>10</number>
+    </property>
+    <property name="value">
+     <number>99</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="PlotRangeFromInput">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>550</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="PlotRangeToInput">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>580</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>99</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="AnimationSpeed">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>660</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>1000</number>
+    </property>
+    <property name="singleStep">
+     <number>10</number>
+    </property>
+    <property name="value">
+     <number>10</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="AnimationSpeedInput">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>660</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>10</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>640</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Animation Speed</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PlayAnimationButton">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>700</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Play Animation</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>750</y>
+      <width>118</width>
+      <height>3</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>620</y>
+      <width>118</width>
+      <height>3</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>520</y>
+      <width>118</width>
+      <height>3</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_4">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>390</y>
+      <width>118</width>
+      <height>3</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_5">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>290</y>
+      <width>118</width>
+      <height>3</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
     </property>
    </widget>
   </widget>
@@ -278,4 +517,8 @@
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+ </buttongroups>
 </ui>
