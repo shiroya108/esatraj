@@ -1,4 +1,4 @@
-# Trajectory display
+# Trajectory display for Thesis: Inertial Trajectory Estimation Using Low-Cost Inertial Measurement Units and Edge Computing
 Receives estimated trajectory from device and plot on 3D graph
 Then save the trajectory result to image or CSV format
 
